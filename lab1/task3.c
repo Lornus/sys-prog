@@ -1,16 +1,16 @@
-#include <sys/types.h>
-#include <sys/time.h>
 #include <stdio.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
+#include <poll.h>
 
 int main(int argc, char *argv[])
 {
   size_t BUFF_SIZE = 1024;
 
-  if (argc < 2)
+ if (argc < 2)
   {
     fprintf(stderr, "Must be one identifier\n");
     exit(1);
@@ -23,19 +23,15 @@ int main(int argc, char *argv[])
     }
 
   char *identifier = argv[1];
-  char buff[BUFF_SIZE];
+  struct pollfd fds[1];
   int output, nread;
-  fd_set input, testfds;
-  struct timeval timeout;
-  FD_ZERO(&input);
-  FD_SET(0, &input);
+  char buff[BUFF_SIZE];
 
   while (1)
   {
-    testfds = input;
-    timeout.tv_sec = 5;
-    timeout.tv_usec = 0;
-    output = select(FD_SETSIZE, &testfds, (fd_set *)NULL, (fd_set *)NULL, &timeout);
+    fds[0].fd = STDIN_FILENO;
+    fds[0].events = POLLIN;
+    output = poll(fds, 1, 5000);
     switch (output)
     {
     case 0:
