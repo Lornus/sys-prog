@@ -12,22 +12,22 @@ void childProcess();
 int main(void) {
     int fd;
     ssize_t bytes_output;
-    pid_t forkId;
+    pid_t fork_id;
 
-    fd = open("lab2.log", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    fd = open("test.log", O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (fd == -1) {
-      printf("Error while opening log file for writing (initial)\n");
+      printf("Error while opening test.log for writing (initial)\n");
       return -1;
     }
-    write(fd, "WRITING TO LOG FILE\n", strlen("WRITING TO LOG FILE\n"));
+    write(fd, "STARTED\n", strlen("STARTED\n"));
 
-    forkId = fork();
-    if (forkId < 0) {
-        write(fd, "Error while trying to call fork()\n",
-        strlen("Error while trying to call fork()\n"));
+    fork_id = fork();
+    if (fork_id < 0) {
+        write(fd, "Error occured while trying to fork()\n",
+        strlen("Error occured while trying to fork()\n"));
         close(fd);
     }
-    else if (forkId == 0) {
+    else if (fork_id == 0) {
         childProcess();
     }
     else {
@@ -38,8 +38,8 @@ int main(void) {
 }
 
 void parentProcess(int * fd) {
-    write((* fd), "Child has been created\n",
-    strlen("Child has been created\n"));
+    write((* fd), "The child has been created, exiting\n",
+    strlen("The child has been created, exiting\n"));
     exit(EXIT_SUCCESS);
 }
 
@@ -64,15 +64,15 @@ void childProcess() {
         close(i);
     }
 
-    open("/dev/null", O_RDWR);
+    open("/dev/null",O_RDWR);
     dup(0); 
     dup(0); 
 
     buff_length = sprintf(buff, "PID: %d, GID: %d, SID: %d\n", getpid(), getgid(), newSid);
-    fd = open("./lab2.log", O_WRONLY | O_CREAT | O_APPEND, 0644);
+    fd = open("/home/student/kp9102/labs-sys/lab2/test.log", O_WRONLY | O_CREAT | O_APPEND, 0644);
 
     if (fd == -1) {
-      printf("Error while opening log file for writing (from daemon)\n");
+      printf("Error while opening test.log for writing (from daemon)\n");
       return;
     }
     

@@ -28,7 +28,7 @@ int main(void) {
   sigaction(SIGHUP, &na, NULL);
 
   while(1) {
-    printf("Loop iteration (%d)\n", counter);
+    printf(" %d iteration\n", counter);
     FP = open("lab3.log", O_CREAT | O_RDWR | O_APPEND, 0644);
     write(FP, "...waiting...\n", sizeof("...waiting...\n") - 1);
     close(FP);

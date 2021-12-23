@@ -11,7 +11,7 @@
 int BUFFER_SIZE = 512;
 struct datum
 {
-  pid_t pId;
+  pid_t pid;
   struct tm current_timestamp;
   char buffer[256];
 };
@@ -22,7 +22,7 @@ int main(void)
   char buffer[256];
   struct datum *dtm = NULL;
   time_t current_timestamp;
-  fd = shm_open("/lab3", O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+  fd = shm_open("/rpi", O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
   if (fd == -1)
   {
     printf("Error: %s\n", strerror(errno));
@@ -45,16 +45,16 @@ int main(void)
     fgets(buffer, 512, stdin);
     msync(dtm, sizeof(struct datum), MS_SYNC);
     printf("Data in datum:\n");
-    printf("PID: %d\n", dtm->pId);
+    printf("PID: %d\n", dtm->pid);
     printf("Current time: %s\n", asctime(&(dtm->current_timestamp)));
     printf("String from buffer: %s\n", dtm->buffer);
-    dtm->pId = getpid();
+    dtm->pid = getpid();
     time(&current_timestamp);
     dtm->current_timestamp = (*localtime(&current_timestamp));
 
     strcpy(dtm->buffer, buffer);
   }
   munmap(dtm, sizeof(struct datum));
-  shm_unlink("/lab3");
+  shm_unlink("/rpi");
   return 0;
 }
