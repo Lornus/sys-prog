@@ -6,7 +6,7 @@
 
 int main(int argc, char** argv) {
     if (argc < 3) {
-        fprintf(stderr, "Must be 2 arguments\n");
+        fprintf(stderr, "Two argumentes are expected\n");
         return 1;
     }
 
@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     } else if (strcmp(argv[1], "-r") == 0) {
         layer4_receive(argv[2]);
     } else {
-        fprintf(stderr, "Unknown flag\n Try -t and -r");
+        fprintf(stderr, "Unknown flag:\nTry -t for sending and -r for receiving\n");
         return 1;
     }
 

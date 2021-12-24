@@ -131,7 +131,7 @@ int layer1_transmit(L2_TB_BLOCK* pkg) {
 
     int errors = 0;
     while (errors < TTR) {
-        puts("transmit_buf");
+        puts("buffer was transmitted");
         transmit_buf(pipe, pkg, sizeof(L2_TB_BLOCK), TIMEOUT_MS);
 
         Response res;

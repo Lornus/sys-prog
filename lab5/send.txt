@@ -1,3 +1,1 @@
-Test message
-
-Second message while running
+Message one
